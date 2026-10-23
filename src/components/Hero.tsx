@@ -10,20 +10,24 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onStartProject, onViewProjects }) => {
   return (
-    <section className="relative min-h-[92vh] flex flex-col justify-between pt-24 pb-12 bg-stone-950 text-white overflow-hidden">
-      {/* Background Architectural Canvas with Measured Contrast Scrim */}
-      <div className="absolute inset-0 z-0 opacity-40">
+    <section className="relative min-h-[94vh] flex flex-col justify-between pt-24 pb-12 bg-stone-950 text-white overflow-hidden">
+      {/* Brightened Architectural Construction Backdrop */}
+      <div className="absolute inset-0 z-0 opacity-75">
         <img
           src={HERO_IMAGE}
-          alt="Anthuvann Infra precision construction site"
-          className="w-full h-full object-cover object-center"
+          alt="Anthuvann Infra active construction architecture"
+          className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/85 to-stone-950/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-stone-950/60" />
+        {/* Subtle luminous architectural scrim allowing golden hour & sky through */}
+        <div className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/70 to-emerald-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-stone-950/40" />
+        {/* Construction Grid Texture */}
+        <div className="absolute inset-0 construction-grid-pattern opacity-40 pointer-events-none" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-12">
+
         <div className="max-w-3xl">
           {/* Eco-Construction Tagline & Logo Mark */}
           <div className="flex items-center gap-3 mb-4">

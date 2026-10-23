@@ -6,3 +6,17 @@
   }
 }
 
+.construction-grid-pattern {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+}
+
+.construction-blueprint-bg {
+  background-size: 30px 30px;
+  background-image: 
+    linear-gradient(to right, rgba(217, 119, 6, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 119, 6, 0.08) 1px, transparent 1px);
+}
+
