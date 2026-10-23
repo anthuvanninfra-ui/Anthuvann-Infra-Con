@@ -612,29 +612,6 @@ export const WHY_CHOOSE_US = [
   }
 ];
 
-export const TESTIMONIALS = [
-  {
-    quote: "Anthuvann Infra executed our 12,500 sq.ft luxury villa with phenomenal structural precision. Their single-point turnkey model meant we never had to mediate between civil teams, MEP technicians, or interior carpenters. Delivered on schedule with zero compromises.",
-    client: "Vikramaditya Rao",
-    role: "Managing Director",
-    company: "Rao Enterprises",
-    project: "The Verve Sanctuary Villa, Indiranagar"
-  },
-  {
-    quote: "As an architectural practice, finding a general contractor that respects cantilever details and complex exposed concrete finishes is rare. Anthuvann Infra is our preferred execution partner across Bengaluru.",
-    client: "Ananya Deshmukh",
-    role: "Principal Architect",
-    company: "Studio Form & Space",
-    project: "Commercial & Residential Collaborations"
-  },
-  {
-    quote: "Delivered our 145,000 sq.ft industrial manufacturing facility with laser-screeded FM2 flooring in record time. Their safety discipline and on-site engineering supervision were benchmark caliber.",
-    client: "Rajeshwar Hegde",
-    role: "VP Operations",
-    company: "Apex Precision Logistics",
-    project: "Apex Industrial Hub, Hosur Corridor"
-  }
-];
 
 export const COMPANY_CONTACT = {
   name: 'Anthuvann Infra & Construction',

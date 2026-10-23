@@ -1,6 +1,6 @@
 import React from 'react';
 import { Check, ShieldCheck, Clock, Award, Building, HeartHandshake, Sparkles, Scale } from 'lucide-react';
-import { WHY_CHOOSE_US, TESTIMONIALS } from '../data/projectsData';
+import { WHY_CHOOSE_US } from '../data/projectsData';
 
 export const WhyAnthuvann: React.FC = () => {
   const icons = [
@@ -32,7 +32,7 @@ export const WhyAnthuvann: React.FC = () => {
         </div>
 
         {/* 7 Key Values Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {WHY_CHOOSE_US.map((item, idx) => (
             <div
               key={item.title}
@@ -54,37 +54,8 @@ export const WhyAnthuvann: React.FC = () => {
             </div>
           ))}
         </div>
-
-        {/* Concrete Client Testimonials (Claim-to-Proof Adjacency) */}
-        <div className="pt-8 border-t border-stone-200">
-          <div className="max-w-2xl mb-8">
-            <p className="text-xs uppercase tracking-widest text-stone-500 font-bold mb-1">
-              Client &amp; Partner Testimonials
-            </p>
-            <h3 className="text-xl font-bold text-stone-900">
-              Proven On-Site Impact &amp; Professional Endorsements
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map((t) => (
-              <div
-                key={t.client}
-                className="p-6 bg-stone-50 border border-stone-200 rounded-sm flex flex-col justify-between space-y-4"
-              >
-                <p className="text-xs text-stone-700 italic leading-relaxed">
-                  "{t.quote}"
-                </p>
-                <div className="pt-3 border-t border-stone-200/80">
-                  <p className="text-xs font-bold text-stone-900">{t.client}</p>
-                  <p className="text-[11px] text-amber-700 font-medium">{t.role}, {t.company}</p>
-                  <p className="text-[10px] text-stone-500 mt-0.5">{t.project}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
 };
+
