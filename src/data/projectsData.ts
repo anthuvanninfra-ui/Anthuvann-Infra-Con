@@ -33,11 +33,18 @@ export interface ProjectCategory {
   typicalScale: string;
 }
 
-export const HERO_IMAGE = '/src/assets/images/hero_construction_architecture_1791959479841.jpg';
-export const VILLA_IMAGE = '/src/assets/images/project_luxury_villa_1791959479655.jpg';
-export const OFFICE_IMAGE = '/src/assets/images/project_corporate_office_1791959480333.jpg';
-export const INTERIOR_IMAGE = '/src/assets/images/project_interior_execution_1791959480280.jpg';
-export const INDUSTRIAL_IMAGE = '/src/assets/images/project_industrial_facility_1791959480572.jpg';
+import heroImg from '../assets/images/hero_construction_architecture_1791959479841.jpg';
+import villaImg from '../assets/images/project_luxury_villa_1791959479655.jpg';
+import officeImg from '../assets/images/project_corporate_office_1791959480333.jpg';
+import interiorImg from '../assets/images/project_interior_execution_1791959480280.jpg';
+import industrialImg from '../assets/images/project_industrial_facility_1791959480572.jpg';
+
+export const HERO_IMAGE = heroImg;
+export const VILLA_IMAGE = villaImg;
+export const OFFICE_IMAGE = officeImg;
+export const INTERIOR_IMAGE = interiorImg;
+export const INDUSTRIAL_IMAGE = industrialImg;
+
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = [
   {

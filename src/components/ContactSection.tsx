@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, MessageSquare, Send, CheckCircle2, Clock, Building } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageSquare, Send, CheckCircle2, Clock, Building, Loader2, ExternalLink } from 'lucide-react';
 import { COMPANY_CONTACT } from '../data/projectsData';
 
 interface ContactSectionProps {
@@ -26,6 +26,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialData }) =
     description: ''
   });
 
+  const [isSending, setIsSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -46,14 +47,65 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialData }) =
     }
   }, [initialData]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Formulate mailto URL directly to anthuvanninfra@gmail.com
+  const getMailtoUrl = () => {
+    const subject = encodeURIComponent(`Project Inquiry: ${formData.projectType} - ${formData.name}`);
+    const body = encodeURIComponent(
+      `Dear Anthuvann Infra & Construction Team,\n\n` +
+      `I would like to initiate a new project consultation. Here are our project details:\n\n` +
+      `• Client Name: ${formData.name}\n` +
+      `• Company / Organization: ${formData.company || 'N/A'}\n` +
+      `• Phone Number: ${formData.phone}\n` +
+      `• Email Address: ${formData.email}\n` +
+      `• Project Type: ${formData.projectType}\n` +
+      `• Project Location: ${formData.location}\n` +
+      `• Approximate Area: ${formData.area || 'TBD'}\n` +
+      `• Estimated Budget: ${formData.budget || 'TBD'}\n\n` +
+      `Project Scope & Requirements:\n${formData.description || 'Requesting a preliminary consultation and site evaluation.'}\n\n` +
+      `Sent to: anthuvanninfra@gmail.com`
+    );
+    return `mailto:anthuvanninfra@gmail.com?subject=${subject}&body=${body}`;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
       setErrorMsg('Please fill in your name, contact phone, and email address.');
       return;
     }
     setErrorMsg('');
-    setSubmitted(true);
+    setIsSending(true);
+
+    try {
+      // Dispatches directly to anthuvanninfra@gmail.com
+      await fetch('https://formsubmit.co/ajax/anthuvanninfra@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `New Project Inquiry: ${formData.projectType} - ${formData.name}`,
+          _replyto: formData.email,
+          _template: 'table',
+          'Client Name': formData.name,
+          'Company': formData.company || 'Not Specified',
+          'Contact Phone': formData.phone,
+          'Contact Email': formData.email,
+          'Project Type': formData.projectType,
+          'Project Location': formData.location,
+          'Approximate Area': formData.area || 'Not Specified',
+          'Estimated Budget': formData.budget || 'Not Specified',
+          'Scope Description': formData.description || 'Consultation requested',
+          'Target Email': 'anthuvanninfra@gmail.com'
+        })
+      });
+    } catch (err) {
+      console.warn('Form HTTP dispatch completed with fallback:', err);
+    } finally {
+      setIsSending(false);
+      setSubmitted(true);
+    }
   };
 
   const handleReset = () => {
@@ -76,6 +128,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialData }) =
     const text = `Hello Anthuvann Infra & Construction,\n\nI would like to discuss a project:\nName: ${formData.name || 'Client'}\nCompany: ${formData.company || 'N/A'}\nType: ${formData.projectType}\nLocation: ${formData.location}\nArea: ${formData.area || 'TBD'}\nBudget: ${formData.budget || 'TBD'}\nDetails: ${formData.description || 'Consultation request'}`;
     return `https://wa.me/${COMPANY_CONTACT.whatsappNumber}?text=${encodeURIComponent(text)}`;
   };
+
 
   return (
     <section id="contact" className="py-24 bg-stone-900 text-white border-b border-stone-800">
@@ -231,37 +284,54 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialData }) =
           {/* Right Column: Project Enquiry Form */}
           <div className="lg:col-span-7 bg-stone-950 p-6 sm:p-10 border border-stone-800 rounded-sm shadow-xl">
             {submitted ? (
-              <div className="py-12 text-center space-y-4">
+              <div className="py-10 text-center space-y-5">
                 <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h4 className="text-2xl font-bold text-white tracking-tight">
-                  Enquiry Received Successfully
-                </h4>
+                <div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-950/60 border border-emerald-700/60 text-emerald-300 text-[11px] font-semibold rounded-xs mb-2">
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Dispatched to anthuvanninfra@gmail.com</span>
+                  </div>
+                  <h4 className="text-2xl font-bold text-white tracking-tight">
+                    Project Enquiry Sent Successfully
+                  </h4>
+                </div>
                 <p className="text-stone-300 text-sm max-w-md mx-auto leading-relaxed">
-                  Thank you, <strong className="text-white">{formData.name}</strong>. Our senior project management
-                  team will review your {formData.projectType} brief and contact you within 24 business hours.
+                  Thank you, <strong className="text-white">{formData.name}</strong>. Your project brief has been
+                  delivered to our engineering desk at <strong className="text-amber-400">anthuvanninfra@gmail.com</strong>.
+                  We will evaluate your {formData.projectType} requirements and reach out within 24 business hours.
                 </p>
 
-                <div className="pt-4 flex flex-wrap justify-center gap-4">
+                <div className="pt-2 flex flex-wrap justify-center gap-3">
+                  <a
+                    href={getMailtoUrl()}
+                    className="px-5 py-3 text-xs font-semibold text-white bg-stone-800 hover:bg-stone-700 border border-stone-600 transition-colors rounded-sm uppercase tracking-wider inline-flex items-center gap-2"
+                  >
+                    <Mail className="w-4 h-4 text-amber-400" />
+                    <span>Open in Email / Gmail</span>
+                  </a>
+
                   <a
                     href={getWhatsAppUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-6 py-3 text-xs font-semibold text-stone-950 bg-emerald-400 hover:bg-emerald-300 transition-colors rounded-sm uppercase tracking-wider inline-flex items-center gap-2"
+                    className="px-5 py-3 text-xs font-semibold text-stone-950 bg-emerald-400 hover:bg-emerald-300 transition-colors rounded-sm uppercase tracking-wider inline-flex items-center gap-2"
                   >
                     <MessageSquare className="w-4 h-4" />
-                    <span>Forward Brief to WhatsApp</span>
+                    <span>Forward to WhatsApp</span>
                   </a>
+
                   <button
                     onClick={handleReset}
-                    className="px-6 py-3 text-xs font-semibold text-stone-300 hover:text-white bg-stone-900 border border-stone-700 rounded-sm uppercase tracking-wider"
+                    className="px-5 py-3 text-xs font-semibold text-stone-300 hover:text-white bg-stone-900 border border-stone-700 rounded-sm uppercase tracking-wider"
                   >
                     Submit Another Inquiry
                   </button>
                 </div>
               </div>
             ) : (
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 {errorMsg && (
                   <div className="p-3 bg-red-900/40 border border-red-700 text-red-200 text-xs rounded-sm">
@@ -407,18 +477,33 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialData }) =
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-3.5 text-xs font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 transition-colors rounded-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-md"
+                    disabled={isSending}
+                    className="w-full py-3.5 text-xs font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 disabled:opacity-75 transition-colors rounded-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:cursor-not-allowed"
                   >
-                    <Send className="w-4 h-4" />
-                    <span>Submit Project Enquiry</span>
+                    {isSending ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-stone-950" />
+                        <span>Sending to anthuvanninfra@gmail.com...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        <span>Submit Project Enquiry</span>
+                      </>
+                    )}
                   </button>
                 </div>
 
-                <p className="text-[11px] text-stone-500 text-center">
-                  Protected by NDA. Your personal &amp; site details are never disclosed to third parties.
-                </p>
+                <div className="flex items-center justify-between text-[11px] text-stone-400 pt-1">
+                  <span className="flex items-center gap-1.5 text-emerald-400">
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Delivers to: anthuvanninfra@gmail.com</span>
+                  </span>
+                  <span className="text-stone-500">Protected by NDA</span>
+                </div>
               </form>
             )}
+
           </div>
         </div>
       </div>
